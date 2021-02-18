@@ -151,7 +151,10 @@ def _is_service_active(service_name):
 
 def _is_service_active_dbus(system_bus, service_name):
 
-    systemd = system_bus.get_object("org.freedesktop.systemd1", "/org/freedesktop/systemd1")
+    try:
+        systemd = system_bus.get_object("org.freedesktop.systemd1", "/org/freedesktop/systemd1")
+    except dbus.exceptions.DBusException:  # fallback for systems without dbus(assuming it's openrc if not dbus)
+        return _is_service_active_openrc(service_name)
 
     try:
         unit_path = systemd.GetUnit("%s.service" % service_name, dbus_interface="org.freedesktop.systemd1.Manager")
@@ -164,6 +167,13 @@ def _is_service_active_dbus(system_bus, service_name):
 
     return state == "running"
 
+def _is_service_active_openrc(service_name):
+    try:
+        exec_bash("rc-status --nocolor default | grep -E '%s.*started'" % service_name)
+    except BashError:
+        return False
+    else:
+        return True
 
 def _is_service_active_bash(service_name):
 
