@@ -168,12 +168,7 @@ def _is_service_active_dbus(system_bus, service_name):
     return state == "running"
 
 def _is_service_active_openrc(service_name):
-    try:
-        exec_bash("rc-status --nocolor default | grep -E '%s.*started'" % service_name)
-    except BashError:
-        return False
-    else:
-        return True
+    return subprocess.run("rc-status --nocolor default | grep -E '%s.*started'" % service_name, shell=True).returncode == 0
 
 def _is_service_active_bash(service_name):
 
