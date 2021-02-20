@@ -19,6 +19,7 @@ backup=('etc/optimus-manager/xorg/integrated-mode/integrated-gpu.conf'
         'etc/optimus-manager/xorg/nvidia-mode/nvidia-gpu.conf'
         'etc/optimus-manager/xorg/hybrid-mode/integrated-gpu.conf'
         'etc/optimus-manager/xorg/hybrid-mode/nvidia-gpu.conf'
+        'etc/optimus-manager/optimus-manager.conf'
 
         'etc/optimus-manager/xsetup-integrated.sh'
         'etc/optimus-manager/xsetup-nvidia.sh'
